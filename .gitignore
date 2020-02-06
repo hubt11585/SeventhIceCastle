@@ -1,10 +1,11 @@
 /icecastle-vue/node_modules
-/icecastle-vue/.idea/
+/icecastle-vue/.idea
 /icecastle-vue/package-lock.json
+
 
 /icecastle/.gradle
 /icecastle/.idea
 /icecastle/out
 /icecastle/icecastle.iml
 /icecastle/.gradle
-/icecastle/.gradle
+/icecastle/build
