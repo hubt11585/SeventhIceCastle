@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class StringUntil {
 
     /**
-     * ÅĞ¶Ï×Ö·û´®ÊÇ·ñÎª¿Õ
+     * åˆ¤æ–­å­—ç¬¦ä¸²æ˜¯å¦ä¸ºç©º
      * @param str
      * @return
      */
@@ -26,7 +26,7 @@ public class StringUntil {
     }
 
     /**
-     * ÅĞ¶Ï×Ö·û´®ÊÇ·ñ²»Îª¿Õ
+     * åˆ¤æ–­å­—ç¬¦ä¸²æ˜¯å¦ä¸ä¸ºç©º
      * @param str
      * @return
      */
@@ -35,7 +35,7 @@ public class StringUntil {
     }
 
     /**
-     * ÅĞ¶ÏÊÇ·ñÎªÕûÊı
+     * åˆ¤æ–­æ˜¯å¦ä¸ºæ•´æ•°
      * @param str
      * @return
      */
@@ -56,7 +56,7 @@ public class StringUntil {
     }
 
     /**
-     * ÅĞ¶ÏÊÇ·ñÎªĞ¡Êı
+     * åˆ¤æ–­æ˜¯å¦ä¸ºå°æ•°
      * @param str
      * @return
      */
@@ -83,7 +83,7 @@ public class StringUntil {
     }
 
     /**
-     * ÑéÖ¤ÓÊÏä
+     * éªŒè¯é‚®ç®±
      * @param email
      * @return
      */

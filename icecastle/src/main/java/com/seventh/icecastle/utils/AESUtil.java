@@ -9,51 +9,51 @@ import java.util.Base64;
 
 public class AESUtil {
     private static final String KEY_ALGORITHM = "AES";
-    private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";//Ä¬ÈÏµÄ¼ÓÃÜËã·¨
+    private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";//é»˜è®¤çš„åŠ å¯†ç®—æ³•
 
     /**
-     * AES ¼ÓÃÜ²Ù×÷
-     * @param content ´ı¼ÓÃÜÄÚÈİ
-     * @param key ¼ÓÃÜÃÜÔ¿
-     * @return ·µ»ØBase64×ªÂëºóµÄ¼ÓÃÜÊı¾İ
+     * AES åŠ å¯†æ“ä½œ
+     * @param content å¾…åŠ å¯†å†…å®¹
+     * @param key åŠ å¯†å¯†é’¥
+     * @return è¿”å›Base64è½¬ç åçš„åŠ å¯†æ•°æ®
      */
     public static String encrypt(String content, String key) throws Exception {
-        Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);// ´´½¨ÃÜÂëÆ÷
+        Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);// åˆ›å»ºå¯†ç å™¨
         byte[] byteContent = content.getBytes("utf-8");
-        cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(key));// ³õÊ¼»¯Îª¼ÓÃÜÄ£Ê½µÄÃÜÂëÆ÷
-        byte[] result = cipher.doFinal(byteContent);// ¼ÓÃÜ
-        return Base64.getEncoder().encodeToString(result);//Í¨¹ıBase64×ªÂë·µ»Ø
+        cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(key));// åˆå§‹åŒ–ä¸ºåŠ å¯†æ¨¡å¼çš„å¯†ç å™¨
+        byte[] result = cipher.doFinal(byteContent);// åŠ å¯†
+        return Base64.getEncoder().encodeToString(result);//é€šè¿‡Base64è½¬ç è¿”å›
     }
 
     /**
-     * AES ½âÃÜ²Ù×÷
+     * AES è§£å¯†æ“ä½œ
      * @param content
      * @param key
      * @return
      */
     public static String decrypt(String content, String key) throws Exception {
-        //ÊµÀı»¯
+        //å®ä¾‹åŒ–
         Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
-        //Ê¹ÓÃÃÜÔ¿³õÊ¼»¯£¬ÉèÖÃÎª½âÃÜÄ£Ê½
+        //ä½¿ç”¨å¯†é’¥åˆå§‹åŒ–ï¼Œè®¾ç½®ä¸ºè§£å¯†æ¨¡å¼
         cipher.init(Cipher.DECRYPT_MODE, getSecretKey(key));
-        //Ö´ĞĞ²Ù×÷
+        //æ‰§è¡Œæ“ä½œ
         byte[] base64 = Base64.getDecoder().decode(content);
         byte[] result = cipher.doFinal(base64);
         return new String(result, "utf-8");
     }
 
     /**
-     * Éú³É¼ÓÃÜÃØÔ¿
+     * ç”ŸæˆåŠ å¯†ç§˜é’¥
      * @return
      */
     private static SecretKeySpec getSecretKey(final String key) throws Exception {
-        //·µ»ØÉú³ÉÖ¸¶¨Ëã·¨ÃÜÔ¿Éú³ÉÆ÷µÄ KeyGenerator ¶ÔÏó
+        //è¿”å›ç”ŸæˆæŒ‡å®šç®—æ³•å¯†é’¥ç”Ÿæˆå™¨çš„ KeyGenerator å¯¹è±¡
         KeyGenerator kg = null;
         kg = KeyGenerator.getInstance(KEY_ALGORITHM);
-        //AES ÒªÇóÃÜÔ¿³¤¶ÈÎª 128
+        //AES è¦æ±‚å¯†é’¥é•¿åº¦ä¸º 128
         kg.init(128, new SecureRandom(key.getBytes()));
-        //Éú³ÉÒ»¸öÃÜÔ¿
+        //ç”Ÿæˆä¸€ä¸ªå¯†é’¥
         SecretKey secretKey = kg.generateKey();
-        return new SecretKeySpec(secretKey.getEncoded(), KEY_ALGORITHM);// ×ª»»ÎªAES×¨ÓÃÃÜÔ¿
+        return new SecretKeySpec(secretKey.getEncoded(), KEY_ALGORITHM);// è½¬æ¢ä¸ºAESä¸“ç”¨å¯†é’¥
     }
 }

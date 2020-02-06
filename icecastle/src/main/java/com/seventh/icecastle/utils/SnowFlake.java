@@ -7,33 +7,33 @@ import java.net.SocketException;
 import java.util.Enumeration;
 
 /**
- * Ñ©»¨Ëã·¨
+ * é›ªèŠ±ç®—æ³•
  */
 public class SnowFlake {
 
     private final static long twepoch = 12888349746579L;
-    // »úÆ÷±êÊ¶Î»Êı
+    // æœºå™¨æ ‡è¯†ä½æ•°
     private final static long workerIdBits = 5L;
-    // Êı¾İÖĞĞÄ±êÊ¶Î»Êı
+    // æ•°æ®ä¸­å¿ƒæ ‡è¯†ä½æ•°
     private final static long datacenterIdBits = 5L;
-    // ºÁÃëÄÚ×ÔÔöÎ»Êı
+    // æ¯«ç§’å†…è‡ªå¢ä½æ•°
     private final static long sequenceBits = 12L;
-    // »úÆ÷IDÆ«×óÒÆ12Î»
+    // æœºå™¨IDåå·¦ç§»12ä½
     private final static long workerIdShift = sequenceBits;
-    // Êı¾İÖĞĞÄID×óÒÆ17Î»
+    // æ•°æ®ä¸­å¿ƒIDå·¦ç§»17ä½
     private final static long datacenterIdShift = sequenceBits + workerIdBits;
-    // Ê±¼äºÁÃë×óÒÆ22Î»
+    // æ—¶é—´æ¯«ç§’å·¦ç§»22ä½
     private final static long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
-    //sequenceÑÚÂë£¬È·±£sequnce²»»á³¬³öÉÏÏŞ
+    //sequenceæ©ç ï¼Œç¡®ä¿sequnceä¸ä¼šè¶…å‡ºä¸Šé™
     private final static long sequenceMask = -1L ^ (-1L << sequenceBits);
-    //ÉÏ´ÎÊ±¼ä´Á
+    //ä¸Šæ¬¡æ—¶é—´æˆ³
     private static long lastTimestamp = -1L;
-    //ĞòÁĞ
+    //åºåˆ—
     private long sequence = 0L;
-    //·şÎñÆ÷ID
+    //æœåŠ¡å™¨ID
     private long workerId = 1L;
     private static long workerMask = -1L ^ (-1L << workerIdBits);
-    //½ø³Ì±àÂë
+    //è¿›ç¨‹ç¼–ç 
     private long processId = 1L;
     private static long processMask = -1L ^ (-1L << datacenterIdBits);
 
@@ -47,21 +47,21 @@ public class SnowFlake {
     }
 
     private SnowFlake() {
-        //»ñÈ¡»úÆ÷±àÂë
+        //è·å–æœºå™¨ç¼–ç 
         this.workerId=this.getMachineNum();
-        //»ñÈ¡½ø³Ì±àÂë
+        //è·å–è¿›ç¨‹ç¼–ç 
         RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
         this.processId=Long.valueOf(runtimeMXBean.getName().split("@")[0]).longValue();
 
-        //±ÜÃâ±àÂë³¬³ö×î´óÖµ
+        //é¿å…ç¼–ç è¶…å‡ºæœ€å¤§å€¼
         this.workerId=workerId & workerMask;
         this.processId=processId & processMask;
     }
 
     public synchronized long getNextId() {
-        //»ñÈ¡Ê±¼ä´Á
+        //è·å–æ—¶é—´æˆ³
         long timestamp = timeGen();
-        //Èç¹ûÊ±¼ä´ÁĞ¡ÓÚÉÏ´ÎÊ±¼ä´ÁÔò±¨´í
+        //å¦‚æœæ—¶é—´æˆ³å°äºä¸Šæ¬¡æ—¶é—´æˆ³åˆ™æŠ¥é”™
         if (timestamp < lastTimestamp) {
             try {
                 throw new Exception("Clock moved backwards.  Refusing to generate id for " + (lastTimestamp - timestamp) + " milliseconds");
@@ -69,27 +69,27 @@ public class SnowFlake {
                 e.printStackTrace();
             }
         }
-        //Èç¹ûÊ±¼ä´ÁÓëÉÏ´ÎÊ±¼ä´ÁÏàÍ¬
+        //å¦‚æœæ—¶é—´æˆ³ä¸ä¸Šæ¬¡æ—¶é—´æˆ³ç›¸åŒ
         if (lastTimestamp == timestamp) {
-            // µ±Ç°ºÁÃëÄÚ£¬Ôò+1£¬ÓësequenceMaskÈ·±£sequence²»»á³¬³öÉÏÏŞ
+            // å½“å‰æ¯«ç§’å†…ï¼Œåˆ™+1ï¼Œä¸sequenceMaskç¡®ä¿sequenceä¸ä¼šè¶…å‡ºä¸Šé™
             sequence = (sequence + 1) & sequenceMask;
             if (sequence == 0) {
-                // µ±Ç°ºÁÃëÄÚ¼ÆÊıÂúÁË£¬ÔòµÈ´ıÏÂÒ»Ãë
+                // å½“å‰æ¯«ç§’å†…è®¡æ•°æ»¡äº†ï¼Œåˆ™ç­‰å¾…ä¸‹ä¸€ç§’
                 timestamp = tilNextMillis(lastTimestamp);
             }
         } else {
             sequence = 0;
         }
         lastTimestamp = timestamp;
-        // IDÆ«ÒÆ×éºÏÉú³É×îÖÕµÄID£¬²¢·µ»ØID
+        // IDåç§»ç»„åˆç”Ÿæˆæœ€ç»ˆçš„IDï¼Œå¹¶è¿”å›ID
         long nextId = ((timestamp - twepoch) << timestampLeftShift) | (processId << datacenterIdShift) | (workerId << workerIdShift) | sequence;
         return nextId;
     }
 
     /**
-     * ÔÙ´Î»ñÈ¡Ê±¼ä´ÁÖ±µ½»ñÈ¡µÄÊ±¼ä´ÁÓëÏÖÓĞµÄ²»Í¬
+     * å†æ¬¡è·å–æ—¶é—´æˆ³ç›´åˆ°è·å–çš„æ—¶é—´æˆ³ä¸ç°æœ‰çš„ä¸åŒ
      * @param lastTimestamp
-     * @return ÏÂÒ»¸öÊ±¼ä´Á
+     * @return ä¸‹ä¸€ä¸ªæ—¶é—´æˆ³
      */
     private long tilNextMillis(final long lastTimestamp) {
         long timestamp = this.timeGen();
@@ -104,7 +104,7 @@ public class SnowFlake {
     }
 
     /**
-     * »ñÈ¡»úÆ÷±àÂë
+     * è·å–æœºå™¨ç¼–ç 
      * @return
      */
     private long getMachineNum(){

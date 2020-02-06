@@ -6,7 +6,7 @@ import java.security.MessageDigest;
 public class MD5Util {
 
     /**
-     * Ê¹ÓÃMD5¼ÓÃÜ
+     * ä½¿ç”¨MD5åŠ å¯†
      * @param plainText
      * @return
      */

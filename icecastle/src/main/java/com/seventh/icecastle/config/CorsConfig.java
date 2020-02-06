@@ -5,17 +5,13 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.charset.Charset;
 import java.util.List;
-
+//WebMvcConfigurationSupport
 @Configuration
-public class CorsConfig extends WebMvcConfigurationSupport  {
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("*");
-    }
+public class CorsConfig implements WebMvcConfigurer {
 
     /**
      * 建议使用该方法进行HttpMessageConverters的修改，此时的converters已经是Spring初始化过的
@@ -24,7 +20,7 @@ public class CorsConfig extends WebMvcConfigurationSupport  {
      * @param converters
      */
     @Override
-    protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.forEach(converter -> {
             if (converter instanceof StringHttpMessageConverter){
                 ((StringHttpMessageConverter) converter).setDefaultCharset(Charset.forName("utf-8"));
